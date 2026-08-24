@@ -1,4 +1,4 @@
-# dsh-token-limits-notice
+# context-size-reminder
 
 DSH 上下文限额提示插件 · DeepSeek Harness plugin that reminds you (and the model) every time the conversation context crosses the 1M-token limit.
 
@@ -16,7 +16,7 @@ DeepSeek V4 defaults to a 1M-token context window. This plugin watches each agen
 In a dsh checkout or installed CLI, register the bundle into the web profile:
 
 ```sh
-dsh plugin --profile web add dsh-token-limits-notice
+dsh plugin --profile web add context-size-reminder
 ```
 
 or add the row manually to your profile's `cordis.patch.yml`:
@@ -24,7 +24,7 @@ or add the row manually to your profile's `cordis.patch.yml`:
 ```yaml
 - insert:
     - id: context-size-reminder
-      name: 'dsh-token-limits-notice'
+      name: 'context-size-reminder'
       config:
         thresholdTokens: 1000000
 ```
@@ -40,7 +40,7 @@ Requires the `token-meter` service (the dsh base bundle mounts it by default).
 
 ## How it works
 
-At each `agent/pre-step`, the guard reads `ctx.tokenMeter.measure(session)` — the same replay-aware meter that feeds the composer's context ring — and adds the heuristic price of the pending pre-step messages, which the session log does not yet contain. When the estimate first crosses `thresholdTokens`, the guard delegates via `next()` and appends one reminder to that request's `enter` decision (source `{kind: 'plugin', plugin: 'dsh-token-limits-notice', form: 'notice'}`), which the loop logs as an injected `user/message`.
+At each `agent/pre-step`, the guard reads `ctx.tokenMeter.measure(session)` — the same replay-aware meter that feeds the composer's context ring — and adds the heuristic price of the pending pre-step messages, which the session log does not yet contain. When the estimate first crosses `thresholdTokens`, the guard delegates via `next()` and appends one reminder to that request's `enter` decision (source `{kind: 'plugin', plugin: 'context-size-reminder', form: 'notice'}`), which the loop logs as an injected `user/message`.
 
 - **Once per crossing**: a per-agent `WeakMap` latch fires the reminder only on under → over transitions, so a persistent over-limit surface never re-injects the same nudge and cannot bloat the context it protects. A compaction that brings usage back under arms the next crossing.
 - **Append, never prepend**: the reminder follows the conversation so the request prefix keeps its KV-cache reuse.
