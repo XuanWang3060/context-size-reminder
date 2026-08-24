@@ -1,5 +1,5 @@
 {
-  "name": "dsh-token-limits-notice",
+  "name": "context-size-reminder",
   "description": "DeepSeek Harness plugin: 1M-token context-limit reminders — model-facing guard plus GUI warning · DSH 上下文限额提示插件",
   "version": "0.1.0",
   "type": "module",
@@ -8,7 +8,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/XuanWang3060/dsh-token-limits-notice.git"
+    "url": "git+https://github.com/XuanWang3060/context-size-reminder.git"
   },
   "keywords": [
     "deepseek",

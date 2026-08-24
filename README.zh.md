@@ -1,4 +1,4 @@
-# dsh-token-limits-notice
+# context-size-reminder
 
 DSH 上下文限额提示插件 · DeepSeek Harness 插件：每次会话上下文越过 1M token 限额时，同时提醒模型和你。
 
@@ -16,7 +16,7 @@ DeepSeek V4 默认 1M token 上下文窗口。本插件监视每个 agent 的 pr
 在 dsh 检出或已安装 CLI 中，把 bundle 注册到 web profile：
 
 ```sh
-dsh plugin --profile web add dsh-token-limits-notice
+dsh plugin --profile web add context-size-reminder
 ```
 
 或手动在 profile 的 `cordis.patch.yml` 中加入：
@@ -24,7 +24,7 @@ dsh plugin --profile web add dsh-token-limits-notice
 ```yaml
 - insert:
     - id: context-size-reminder
-      name: 'dsh-token-limits-notice'
+      name: 'context-size-reminder'
       config:
         thresholdTokens: 1000000
 ```
@@ -40,7 +40,7 @@ dsh plugin --profile web add dsh-token-limits-notice
 
 ## 工作原理
 
-每次 `agent/pre-step` 读取 `ctx.tokenMeter.measure(session)`——与输入框上下文圆环同一套可重放计量——再加上尚未写入会话日志的待发送消息的启发式价格。当估算首次越过 `thresholdTokens` 时，守卫通过 `next()` 委托，并向该请求的 `enter` 决策追加一条提醒（source 为 `{kind: 'plugin', plugin: 'dsh-token-limits-notice', form: 'notice'}`），循环将其作为注入的 `user/message` 写入日志。
+每次 `agent/pre-step` 读取 `ctx.tokenMeter.measure(session)`——与输入框上下文圆环同一套可重放计量——再加上尚未写入会话日志的待发送消息的启发式价格。当估算首次越过 `thresholdTokens` 时，守卫通过 `next()` 委托，并向该请求的 `enter` 决策追加一条提醒（source 为 `{kind: 'plugin', plugin: 'context-size-reminder', form: 'notice'}`），循环将其作为注入的 `user/message` 写入日志。
 
 - **每次越过触发一次**：按 agent 隔离的 `WeakMap` 闩锁只在 under → over 转换时触发，持续超限不会重复注入同一条提醒，警告本身也不会撑大它要保护的上下文。压缩使用量回到阈值以下后，下一次越过会再次触发。
 - **追加而非前置**：提醒落在对话之后，请求前缀可继续复用 KV-cache。
