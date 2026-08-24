@@ -1,0 +1,11 @@
+# Context-limit reminders for the dsh web profile.
+#
+# Register this bundle with:
+#   dsh plugin --profile web add dsh-token-limits-notice
+# or add the row below to your profile's cordis.patch.yml manually.
+
+- insert:
+    - id: context-size-reminder
+      name: 'dsh-token-limits-notice'
+      config:
+        thresholdTokens: 1000000

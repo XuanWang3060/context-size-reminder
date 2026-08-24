@@ -1,0 +1,77 @@
+{
+  "name": "dsh-token-limits-notice",
+  "description": "DeepSeek Harness plugin: 1M-token context-limit reminders — model-facing guard plus GUI warning · DSH 上下文限额提示插件",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XuanWang3060/dsh-token-limits-notice.git"
+  },
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "context",
+    "token",
+    "limit",
+    "reminder"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./invariant": {
+      "types": "./lib/types/invariant.d.ts",
+      "default": "./lib/invariant.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/invariant.js",
+    "lib/types/**/*.d.ts",
+    "cordis.patch.yml"
+  ],
+  "scripts": {
+    "build": "tsc -b --pretty false && tsdown",
+    "typecheck": "tsc -b --pretty false",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "^3.18.1"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-agent": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-invariants": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-llm": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-session": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-token-meter": "^0.1.0-rc.7"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "4.0.1",
+    "@deepseek-ai/dsh-agent": "0.1.0-rc.8",
+    "@deepseek-ai/dsh-agent-loop": "0.1.0-rc.8",
+    "@deepseek-ai/dsh-agent-loop-testkit": "0.1.0-rc.8",
+    "@deepseek-ai/dsh-invariants": "0.1.0-rc.8",
+    "@deepseek-ai/dsh-llm": "0.1.0-rc.8",
+    "@deepseek-ai/dsh-session": "0.1.0-rc.8",
+    "@deepseek-ai/dsh-token-meter": "0.1.0-rc.8",
+    "@deepseek-ai/dsh-tools": "0.1.0-rc.8",
+    "@types/node": "^22.20.0",
+    "tsdown": "^0.22.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  }
+}
